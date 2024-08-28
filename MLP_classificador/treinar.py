@@ -11,20 +11,22 @@ classes = np.array([])
 
 num_diretorios = len(diretorios)
 
+dados = []
+classes = []
+
 for i in range(num_diretorios):
     imagens = os.listdir(diretorios[i])
 
     for img in imagens:
-        gray = cv.imread(diretorios[i]+img, cv.IMREAD_GRAYSCALE)
+        gray = cv.imread(os.path.join(diretorios[i], img), cv.IMREAD_GRAYSCALE)
         if gray is None:
             continue
-        gray = cv.resize(gray,(400,400))
-        if dados is not None:
-            dados = np.append(dados, [gray.flatten()], axis=0)
-        else:
-            dados = np.array([gray.flatten()])
+        gray = cv.resize(gray, (400, 400))
+        dados.append(gray.flatten())
+        classes.append(i)
 
-        classes = np.append(classes,i)
+dados = np.array(dados)
+classes = np.array(classes)
 
 
 redeNeural = MLPClassifier()
